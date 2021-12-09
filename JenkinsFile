@@ -3,7 +3,8 @@ pipeline {
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
-        maven "Default"
+        // maven "Default"
+        maven "maven3.8.4"
         jdk "jdk11"
     }
 
@@ -12,7 +13,7 @@ pipeline {
             steps {
                 // Get some code from a GitHub repository
                 git branch: 'main',
-                    url:'https://github.com/matthcol/movieapijava2022.git'
+					url: 'https://github.com/matthcol/movieapijava2022.git'
 
                 // Run Maven on a Unix agent.
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
@@ -25,17 +26,17 @@ pipeline {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 success {
-                    echo 'great success (test?)'
+                    echo 'great success (test ?)'
                     junit '**/target/surefire-reports/TEST-*.xml'
                     archiveArtifacts 'target/*.jar'
                 }
-            
+                
                 always {
                     echo 'Je passe toujours ici'
                 }
                 
-                failure{
-                    echo 'ça foire ici'
+                failure {
+                    echo 'a failure occured'
                 }
             }
         }
